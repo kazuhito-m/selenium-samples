@@ -17,17 +17,20 @@ class SeleniumSampleTest {
         // WebDriver driver = new ChromeDriver()
         FirefoxDriver driver = new FirefoxDriver()
 
-        driver.get("http://www.htmlhifive.com/conts/web/view/Main/WebHome")
-        WebElement elTutorial = driver.findElement(By.linkText("⇒こちら"))
-        elTutorial.click();
+        try {
 
-        WebDriverWait wait = new WebDriverWait(driver, 10)
-        WebElement elTitle = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("document-title")))
+            driver.get("http://www.htmlhifive.com/conts/web/view/Main/WebHome")
+            WebElement elTutorial = driver.findElement(By.linkText("⇒こちら"))
+            elTutorial.click();
 
-        // action & assertion
-        assert elTitle.getText() == "チュートリアル"
+            WebDriverWait wait = new WebDriverWait(driver, 10)
+            WebElement elTitle = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("document-title")))
 
-        driver.quit();
+            // action & assertion
+            assert elTitle.getText() == "チュートリアル"
 
+        } finally {
+           driver.quit();
+        }
     }
 }
