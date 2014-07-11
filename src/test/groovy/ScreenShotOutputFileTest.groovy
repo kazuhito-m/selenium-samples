@@ -1,7 +1,4 @@
-import org.junit.BeforeClass
-
-import static org.junit.Assert.*
-
+import org.junit.*
 import org.junit.Test
 import org.openqa.selenium.*
 import org.openqa.selenium.firefox.FirefoxDriver
@@ -12,6 +9,7 @@ public class ScreenShotOutputFileTest {
 
     static final File EVIDENCE_DIR = new File("build/test-evidence")
 
+    WebDriver driver
 
     @BeforeClass
     static void setUp() {
@@ -21,12 +19,26 @@ public class ScreenShotOutputFileTest {
         EVIDENCE_DIR.mkdirs()
     }
 
+    @Before
+    void initMethod() {
+        clearDriver()
+        driver = new FirefoxDriver()
+    }
+
+    @After
+    void endMethod() {
+        clearDriver()
+    }
+
+    void clearDriver() {
+        if (driver != null) {
+            driver.close()
+            driver = null
+        }
+    }
+
     @Test
     void yahooTest() {
-
-        WebDriver driver = new FirefoxDriver()
-
-        // Access to Yahoo
 
         driver.get("http://yahoo.co.jp/")
         File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE)
@@ -37,7 +49,6 @@ public class ScreenShotOutputFileTest {
         }
 
         // Click 'economy' link
-
         WebElement e = driver.findElement(By.id("economy"))
         e.click()
 
@@ -49,7 +60,6 @@ public class ScreenShotOutputFileTest {
         }
 
         // Search SKYSEA Client View
-
         e = driver.findElement(By.id("srchtxt"))
         e.sendKeys("SKYSEA Client View")
         e.submit()
@@ -65,7 +75,6 @@ public class ScreenShotOutputFileTest {
             e = driver.findElement(By.linkText("Sky株式会社の SKYSEA Client View"))
         } catch (NoSuchElementException ne) {
             fail("No Link for SKYSEA")
-            driver.close()
         }
         e.click()
 
@@ -78,17 +87,10 @@ public class ScreenShotOutputFileTest {
             fail("file error 4")
         }
 
-        // Done.
-
-        driver.close()
     }
 
     @Test
     public void googleTest() {
-        WebDriver driver = new FirefoxDriver()
-
-        // Access to Google
-
         driver.get("http://www.google.co.jp/")
         File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE)
         try {
@@ -96,17 +98,11 @@ public class ScreenShotOutputFileTest {
         } catch (IOException e1) {
             fail("file error G1")
         }
-
-        driver.close()
     }
 
     @Test
     public void seleniumTest() {
-
-        WebDriver driver = new FirefoxDriver()
-
         driver.get("http://docs.seleniumhq.org")
-
         File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE)
         try {
             FileHandler.copy(scrFile, new File(EVIDENCE_DIR , "S1.png"))
@@ -121,9 +117,6 @@ public class ScreenShotOutputFileTest {
             fail("No Link for SKYSEA")
         }
         e.click()
-
-        driver.close()
-
     }
 }
  
