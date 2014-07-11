@@ -1,3 +1,5 @@
+import org.junit.BeforeClass
+
 import static org.junit.Assert.*
 
 import org.junit.Test
@@ -7,8 +9,20 @@ import org.openqa.selenium.io.*
 
 public class ScreenShotOutputFileTest {
 
+
+    static final File EVIDENCE_DIR = new File("build/test-evidence")
+
+
+    @BeforeClass
+    static void setUp() {
+        if (EVIDENCE_DIR.exists()) {
+            EVIDENCE_DIR.deleteDir()
+        }
+        EVIDENCE_DIR.mkdirs()
+    }
+
     @Test
-    public void YahooTest() {
+    void yahooTest() {
 
         WebDriver driver = new FirefoxDriver()
 
@@ -17,7 +31,7 @@ public class ScreenShotOutputFileTest {
         driver.get("http://yahoo.co.jp/")
         File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE)
         try {
-            FileHandler.copy(scrFile, new File("out/evidences/screens/Y1.png"))
+            FileHandler.copy(scrFile, new File(EVIDENCE_DIR , "Y1.png"))
         } catch (IOException e1) {
             fail("file error 1")
         }
@@ -29,7 +43,7 @@ public class ScreenShotOutputFileTest {
 
         scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE)
         try {
-            FileHandler.copy(scrFile, new File("out/evidences/screens/Y2.png"))
+            FileHandler.copy(scrFile, new File(EVIDENCE_DIR , "Y2.png"))
         } catch (IOException e2) {
             fail("file error 2")
         }
@@ -42,7 +56,7 @@ public class ScreenShotOutputFileTest {
 
         scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE)
         try {
-            FileHandler.copy(scrFile, new File("out/evidences/screens/Y3.png"))
+            FileHandler.copy(scrFile, new File(EVIDENCE_DIR , "Y3.png"))
         } catch (IOException e3) {
             fail("file error 3")
         }
@@ -59,7 +73,7 @@ public class ScreenShotOutputFileTest {
 
         scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE)
         try {
-            FileHandler.copy(scrFile, new File("out/evidences/screens/Y4.png"))
+            FileHandler.copy(scrFile, new File(EVIDENCE_DIR , "Y4.png"))
         } catch (IOException e4) {
             fail("file error 4")
         }
@@ -70,7 +84,7 @@ public class ScreenShotOutputFileTest {
     }
 
     @Test
-    public void GoogleTest() {
+    public void googleTest() {
         WebDriver driver = new FirefoxDriver()
 
         // Access to Google
@@ -78,7 +92,7 @@ public class ScreenShotOutputFileTest {
         driver.get("http://www.google.co.jp/")
         File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE)
         try {
-            FileHandler.copy(scrFile, new File("out/evidences/screens/G1.png"))
+            FileHandler.copy(scrFile, new File(EVIDENCE_DIR , "G1.png"))
         } catch (IOException e1) {
             fail("file error G1")
         }
@@ -87,7 +101,7 @@ public class ScreenShotOutputFileTest {
     }
 
     @Test
-    public void SeleniumTest() {
+    public void seleniumTest() {
 
         WebDriver driver = new FirefoxDriver()
 
@@ -95,7 +109,7 @@ public class ScreenShotOutputFileTest {
 
         File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE)
         try {
-            FileHandler.copy(scrFile, new File("out/evidences/screens/S1.png"))
+            FileHandler.copy(scrFile, new File(EVIDENCE_DIR , "S1.png"))
         } catch (IOException e1) {
             fail("file error S1")
         }
