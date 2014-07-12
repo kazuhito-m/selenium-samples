@@ -15,3 +15,7 @@ dependencies {
   compile 'org.sikuli:sikuli-api:1.1.0'
   testCompile "junit:junit:4.11" 
 }
+
+sourceSets {
+    allSource
+}
