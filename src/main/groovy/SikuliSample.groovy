@@ -43,25 +43,19 @@ class SikuliSample {
     void watchEvo2014OnNiconico(String url) {
 
         // 予め「画面探索用の画像」を読んで置く。
-        BufferedImage peke = ImageIO.read(new File("out/production/selenium-samples/peke.png"));
-        BufferedImage wide = ImageIO.read(new File("out/production/selenium-samples/wide.png"));
-        BufferedImage premiaW = ImageIO.read(new File("out/production/selenium-samples/premia_w.png"));
-        BufferedImage premiaN = ImageIO.read(new File("out/production/selenium-samples/premia_n.png"));
-        BufferedImage update = ImageIO.read(new File("out/production/selenium-samples/update.png"));
-
-        def imgPremiaW = new ImageTarget(premiaW)
-        def imgPremiaN = new ImageTarget(premiaN)
+        def images = [:]
+        ["peke","wide","premia_w","premia_n","update"].each { images[it] = new ImageTarget(ImageIO.read(new File("out/production/selenium-samples/${it}.png"))) }
 
         ScreenRegion s = new DesktopScreenRegion()
         Mouse mouse = new DesktopMouse();
 
         def niconamaScreenInitialize = {
             // ペケマークを探してクリック
-            ScreenRegion r = s.wait(new ImageTarget(peke), 5000)
-            mouse.click(r.getCenter());
+            ScreenRegion r = s.wait(images.peke, 5000)
+            mouse.click(r.center)
             // 全画面表示を探してクリック
-            r = s.wait(new ImageTarget(wide), 5000)
-            mouse.click(r.getCenter());
+            r = s.wait(images.wide, 5000)
+            mouse.click(r.center)
         }
 
         // ブラウザ開く
@@ -69,17 +63,17 @@ class SikuliSample {
         // スクリーン初期化
         niconamaScreenInitialize()
 
-        while (true) {
-            Thread.sleep(2000)
+        (1..3600).each {
+            Thread.sleep(3000)
             // 「プレミアの方が入場されました」をキャッチしたら、すかさずブラウザを更新。
-            if (s.find(imgPremiaW) != null || s.find(imgPremiaN) != null) {
+            if (s.find(images.premia_w) != null || s.find(images.premia_n) != null) {
                 // ブラウザの更新アイコンをクリック
-                r = s.wait(new ImageTarget(update), 5000)
-                mouse.click(r.getCenter());
+                ScreenRegion r = s.wait(images.update, 5000)
+                mouse.click(r.center)
                 // スクリーン初期化
                 niconamaScreenInitialize()
             }
-            println "Not found Oidashi messages. : " + new Date().toLocaleString()
+            println "${it} - Not found Oidashi messages. : " + new Date().toLocaleString()
         }
     }
 

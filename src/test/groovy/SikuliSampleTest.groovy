@@ -17,7 +17,6 @@ class SikuliSampleTest {
         sut.execSikuli()
 	}
 
-    @Ignore
     @Test
     void watchEvo2014OnNiconicoTest() {
         sut.watchEvo2014OnNiconico("http://live.nicovideo.jp/watch/lv185028477")
