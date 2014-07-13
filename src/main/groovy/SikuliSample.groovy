@@ -40,7 +40,7 @@ class SikuliSample {
         mouse.click(r.getCenter());
     }
 
-    void watchEvo2014OnNiconico(String url) {
+    void watcgNicoNama(String url) {
 
         // 予め「画面探索用の画像」を読んで置く。
         def images = [:]

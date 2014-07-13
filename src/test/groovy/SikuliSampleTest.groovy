@@ -19,6 +19,6 @@ class SikuliSampleTest {
     @Ignore
     @Test
     void watchEvo2014OnNiconicoTest() {
-        sut.watchEvo2014OnNiconico("http://live.nicovideo.jp/watch/lv185030752")
+        sut.watcgNicoNama("http://live.nicovideo.jp/watch/lv185030752")
     }
 }
