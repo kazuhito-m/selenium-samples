@@ -1,52 +1,32 @@
 import geb.Browser
-import geb.Page
 import geb.navigator.NonEmptyNavigator
 import org.junit.*
-import org.openqa.selenium.*
-import org.openqa.selenium.firefox.FirefoxDriver
-import org.openqa.selenium.htmlunit.HtmlUnitWebElement
-import org.openqa.selenium.io.FileHandler
-import org.openqa.selenium.support.ui.ExpectedConditions
-import org.openqa.selenium.support.ui.WebDriverWait
+import org.junit.rules.TestName
+import org.openqa.selenium.Keys
 
-public class GebSampleTest {
+/**
+ * gebで書いたブラウザテストのサンプル。
+ * SeleniumSampleTest,ScreenShotOutputFileと同内容をgebにて書きなおしたもの。
+ */
+class GebSampleTest {
 
-
-    static final File EVIDENCE_DIR = new File("build/test-evidence")
-
-    WebDriver driver
+    @Rule
+    public TestName names = new TestName()
 
     @BeforeClass
     static void setUp() {
-        if (EVIDENCE_DIR.exists()) {
-            EVIDENCE_DIR.deleteDir()
-        }
-        EVIDENCE_DIR.mkdirs()
+        // レポートディレクトリのクリア
+        Browser.drive { cleanReportGroupDir() }
     }
-
-    @Before
-    void initMethod() {
-        clearDriver()
-        driver = new FirefoxDriver()
-    }
-
-    @After
-    void endMethod() {
-        clearDriver()
-    }
-
-    void clearDriver() {
-        if (driver != null) {
-            driver.close()
-            driver = null
-        }
-    }
-
 
     @Test
     public void basicTest() {
 
         Browser.drive {
+
+            // レポートグループはクラス＋メソッド名に。
+            reportGroup this.class.name + "." + names.methodName
+
             go 'http://www.htmlhifive.com/conts/web/view/Main/WebHome'
 
             // 1ページ目、”⇛こちら”ってリンクを探しクリック。
@@ -58,93 +38,79 @@ public class GebSampleTest {
             assert title == 'チュートリアル - hifive'
             // action & assertion
             assert $("#document-title").text() == "チュートリアル"
+
+            report "basicTest01"
+            // println "ドライバクラス名 : " +  config.driver.class.canonicalName
+
         }
 
     }
 
-    @Ignore
     @Test
     void yahooTest() {
 
-        driver.get("http://yahoo.co.jp/")
-        File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE)
-        try {
-            FileHandler.copy(scrFile, new File(EVIDENCE_DIR, "Y1.png"))
-        } catch (IOException e1) {
-            fail("file error 1")
-        }
+        Browser.drive {
+            // レポートグループはクラス＋メソッド名に。
+            reportGroup this.class.name + "." + names.methodName
 
-        // Click 'economy' link
-        WebElement e = driver.findElement(By.id("economy"))
-        e.click()
+            // ページ移動
+            go "http://yahoo.co.jp/"
+            report "Y1"     // evideince記録
 
-        scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE)
-        try {
-            FileHandler.copy(scrFile, new File(EVIDENCE_DIR, "Y2.png"))
-        } catch (IOException e2) {
-            fail("file error 2")
-        }
+            // Click 'economy' link
+            $("#economy").click()
+            report "Y2"     // evideince記録
 
-        // Search SKYSEA Client View
-        e = driver.findElement(By.id("srchtxt"))
-        e.sendKeys("SKYSEA Client View")
-        e.submit()
+            def queryInput = $("#srchtxt")
+            assert queryInput != null
+            queryInput << "SKYSEA Client View" + Keys.ENTER
+            // evideince記録
+            report "Y3"
 
-        scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE)
-        try {
-            FileHandler.copy(scrFile, new File(EVIDENCE_DIR, "Y3.png"))
-        } catch (IOException e3) {
-            fail("file error 3")
-        }
+            // <a>アンカーを検索すると、長くかかるため、<div>タグで絞ってからその下を検索。
+            // seleniumのfindElement(By.linkText())相当のものがあれば早いのだが…。
+            def link = $("#WS2m").find("a").allElements().find { it.text == "Sky株式会社の SKYSEA Client View" }
+            assert link != null, "No Link for SKYSEA"
+            link.click()
 
-        try {
-            e = driver.findElement(By.linkText("Sky株式会社の SKYSEA Client View"))
-        } catch (NoSuchElementException ne) {
-            fail("No Link for SKYSEA")
-        }
-        e.click()
-
-        // Now we see SKYSEA Client View's site
-
-        scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE)
-        try {
-            FileHandler.copy(scrFile, new File(EVIDENCE_DIR, "Y4.png"))
-        } catch (IOException e4) {
-            fail("file error 4")
+            // Now we see SKYSEA Client View's site
+            report "Y4" // evideince記録
         }
 
     }
 
-    @Ignore
     @Test
-    public void googleTest() {
-        driver.get("http://www.google.co.jp/")
-        File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE)
-        try {
-            FileHandler.copy(scrFile, new File(EVIDENCE_DIR, "G1.png"))
-        } catch (IOException e1) {
-            fail("file error G1")
+    void googleTest() {
+
+        Browser.drive {
+            // レポートグループはクラス＋メソッド名に。
+            reportGroup this.class.name + "." + names.methodName
+            // ページ移動
+            go "http://www.google.co.jp/"
+            report "G1"     // evideince記録
+            assert title == "Google"
         }
+
     }
 
-    @Ignore
     @Test
-    public void seleniumTest() {
-        driver.get("http://docs.seleniumhq.org")
-        File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE)
-        try {
-            FileHandler.copy(scrFile, new File(EVIDENCE_DIR, "S1.png"))
-        } catch (IOException e1) {
-            fail("file error S1")
+    void seleniumTest() {
+
+        Browser.drive {
+            // レポートグループはクラス＋メソッド名に。
+            reportGroup this.class.name + "." + names.methodName
+            // ページ移動
+            go "http://docs.seleniumhq.org"
+            report "S1"     // evideince記録
+            assert title == "Selenium - Web Browser Automation"
+            // メニューリンク抽出
+            def menu = $("#menu_projects")
+            assert menu as NonEmptyNavigator, "No Link for SKYSEA"
+            // ページ移動
+            menu.click()
+            report "S2"
         }
 
-        WebElement e = null
-        try {
-            e = driver.findElement(By.id("menu_projects"))
-        } catch (NoSuchElementException ne) {
-            fail("No Link for SKYSEA")
-        }
-        e.click()
     }
 }
  
