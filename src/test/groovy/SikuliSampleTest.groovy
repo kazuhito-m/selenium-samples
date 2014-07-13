@@ -11,14 +11,14 @@ class SikuliSampleTest {
         sut = new SikuliSample()
     }
 
-    @Ignore
 	@Test
 	void execSikuliTest() {
         sut.execSikuli()
 	}
 
+    @Ignore
     @Test
     void watchEvo2014OnNiconicoTest() {
-        sut.watchEvo2014OnNiconico("http://live.nicovideo.jp/watch/lv185028477")
+        sut.watchEvo2014OnNiconico("http://live.nicovideo.jp/watch/lv185030752")
     }
 }

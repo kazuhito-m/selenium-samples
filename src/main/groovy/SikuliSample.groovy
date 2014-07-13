@@ -66,7 +66,7 @@ class SikuliSample {
         (1..3600).each {
             Thread.sleep(3000)
             // 「プレミアの方が入場されました」をキャッチしたら、すかさずブラウザを更新。
-            if (s.find(images.premia_w) != null || s.find(images.premia_n) != null) {
+            if (s.wait(images.premia_w,500) != null || s.wait(images.premia_n,500) != null) {
                 // ブラウザの更新アイコンをクリック
                 ScreenRegion r = s.wait(images.update, 5000)
                 mouse.click(r.center)
