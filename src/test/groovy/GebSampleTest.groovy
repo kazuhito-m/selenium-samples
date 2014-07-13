@@ -1,10 +1,10 @@
-import org.junit.After
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Ignore
-import org.junit.Test
+import geb.Browser
+import geb.Page
+import geb.navigator.NonEmptyNavigator
+import org.junit.*
 import org.openqa.selenium.*
 import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.htmlunit.HtmlUnitWebElement
 import org.openqa.selenium.io.FileHandler
 import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.WebDriverWait
@@ -42,18 +42,23 @@ public class GebSampleTest {
         }
     }
 
+
     @Test
     public void basicTest() {
 
-        driver.get("http://www.htmlhifive.com/conts/web/view/Main/WebHome")
-        WebElement elTutorial = driver.findElement(By.linkText("⇒こちら"))
-        elTutorial.click();
+        Browser.drive {
+            go 'http://www.htmlhifive.com/conts/web/view/Main/WebHome'
 
-        WebDriverWait wait = new WebDriverWait(driver, 10)
-        WebElement elTitle = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("document-title")))
+            // 1ページ目、”⇛こちら”ってリンクを探しクリック。
+            assert title == "hifive - HTML5とスマートフォンのための開発プラットフォーム - hifive"
+            def link = $('a').allElements().find() { it.text == "⇒こちら" }
+            link.click()
 
-        // action & assertion
-        assert elTitle.getText() == "チュートリアル"
+            // 2ページ目、在る要素のテキストを確認
+            assert title == 'チュートリアル - hifive'
+            // action & assertion
+            assert $("#document-title").text() == "チュートリアル"
+        }
 
     }
 
