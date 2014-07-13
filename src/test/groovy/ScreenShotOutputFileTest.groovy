@@ -6,8 +6,7 @@ import org.openqa.selenium.io.*
 
 public class ScreenShotOutputFileTest {
 
-
-    static final File EVIDENCE_DIR = new File("build/test-evidence")
+    static final File EVIDENCE_DIR = new File("build/test-evidence/selenium")
 
     WebDriver driver
 
@@ -90,7 +89,7 @@ public class ScreenShotOutputFileTest {
     }
 
     @Test
-    public void googleTest() {
+    void googleTest() {
         driver.get("http://www.google.co.jp/")
         File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE)
         try {
@@ -101,7 +100,7 @@ public class ScreenShotOutputFileTest {
     }
 
     @Test
-    public void seleniumTest() {
+    void seleniumTest() {
         driver.get("http://docs.seleniumhq.org")
         File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE)
         try {
