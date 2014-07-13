@@ -1,9 +1,13 @@
+import org.openqa.selenium.interactions.Keyboard
 import org.sikuli.api.DesktopScreenRegion
 import org.sikuli.api.ImageTarget
 import org.sikuli.api.ScreenRegion
 import org.sikuli.api.Target
+import org.sikuli.api.robot.Key
+import org.sikuli.api.robot.KeyModifier
 import org.sikuli.api.robot.Mouse
 import org.sikuli.api.robot.desktop.DesktopMouse
+import org.sikuli.api.robot.desktop.DesktopKeyboard
 import org.sikuli.api.visual.Canvas
 import org.sikuli.api.visual.DesktopCanvas
 
@@ -38,6 +42,13 @@ class SikuliSample {
         // Click the center of the found target
         Mouse mouse = new DesktopMouse();
         mouse.click(r.getCenter());
+
+        // close tab
+        DesktopKeyboard kb = new DesktopKeyboard()
+        kb.keyDown(Key.CTRL)
+        kb.type('w')
+        kb.keyUp(Key.CTRL)
+
     }
 
     void watcgNicoNama(String url) {
