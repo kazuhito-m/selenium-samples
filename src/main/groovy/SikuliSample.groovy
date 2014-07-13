@@ -32,7 +32,7 @@ class SikuliSample {
         ScreenRegion r = s.wait(imageTarget, 5000);
 
         // Display "Hello World" next to the found target for 3 seconds
-        Canvas canvas = newmain DesktopCanvas();
+        Canvas canvas = new DesktopCanvas();
         canvas.addLabel(r, "Hello World").display(3);
 
         // Click the center of the found target
