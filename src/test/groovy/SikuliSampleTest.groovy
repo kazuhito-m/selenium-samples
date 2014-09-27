@@ -11,6 +11,7 @@ class SikuliSampleTest {
         sut = new SikuliSample()
     }
 
+    @Ignore
 	@Test
 	void execSikuliTest() {
         sut.execSikuli()

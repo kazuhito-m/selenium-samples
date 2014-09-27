@@ -21,7 +21,7 @@ public class ScreenShotOutputFileTest {
     @Before
     void initMethod() {
         clearDriver()
-        driver = new FirefoxDriver()
+        driver = EnvironmentDifferentAbsorber.createWebDriver()
     }
 
     @After

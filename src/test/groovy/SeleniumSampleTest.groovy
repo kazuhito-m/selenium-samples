@@ -15,9 +15,12 @@ class SeleniumSampleTest {
     public void test1() {
 
         // WebDriver driver = new ChromeDriver()
-        FirefoxDriver driver = new FirefoxDriver()
+        WebDriver driver
 
         try {
+
+            // WebDriver driver = new ChromeDriver()
+            driver = EnvironmentDifferentAbsorber.createWebDriver()
 
             driver.get("http://www.htmlhifive.com/conts/web/view/Main/WebHome")
             WebElement elTutorial = driver.findElement(By.linkText("⇒こちら"))
@@ -30,7 +33,7 @@ class SeleniumSampleTest {
             assert elTitle.getText() == "チュートリアル"
 
         } finally {
-           driver.quit();
+            if (driver != null)  driver.quit();
         }
     }
 }
