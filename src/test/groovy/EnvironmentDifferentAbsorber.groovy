@@ -1,12 +1,3 @@
-import java.io.BufferedReader
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.net.InetAddress
-import java.net.MalformedURLException
-import java.net.URL
-import java.net.URLConnection
-import java.net.UnknownHostException
-
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.firefox.FirefoxProfile
@@ -16,7 +7,7 @@ import org.openqa.selenium.remote.RemoteWebDriver
 /**
  * 環境差異を吸収する役目のクラス。
  *
- * 現在は「開発用のネットワークで動く設定へと整える」仕事のみをこなしている。
+ * 現在は「独自のネットワークで動く設定へと整える」仕事のみをこなしている。
  *
  * @author kazuhito_m
  */
@@ -28,7 +19,7 @@ class EnvironmentDifferentAbsorber {
 	/** HTTPのプロキシーサーバホスト名 */
 	static final Integer HTTP_PROXY_PORT = 8080
 
-	static final String REMOTE_SELENIUM_SERVER_URL = "http://192.168.1.130:4444/wd/hub/"
+	static final String REMOTE_SELENIUM_SERVER_URL = "http://localhost:64444/wd/hub/"
 
 	/**
 	 * テスト開始時にHTTPプロキシ設定を環境変数に仕込む。
@@ -51,12 +42,13 @@ class EnvironmentDifferentAbsorber {
 	public static WebDriver createWebDriver() throws MalformedURLException {
 		WebDriver driver
 		// 環境依存の問題解決。開発機からなら、プロキシを設定する。
-		if (isHttpConnect(REMOTE_SELENIUM_SERVER_URL)) {
+		if (isHttpConnectable(REMOTE_SELENIUM_SERVER_URL)) {
 	        DesiredCapabilities capability = DesiredCapabilities.firefox()
 	        // capability.setVersion("33.0")
             if (isDeveloperNetwork()) {
-	            capability.setCapability(FirefoxDriver.PROFILE, proxySettedProfile())
+//	            capability.setCapability(FirefoxDriver.PROFILE, proxySettedProfile())
             }
+	            capability.setCapability(FirefoxDriver.PROFILE , new FirefoxProfile())
 	        try {
 	        	driver = new RemoteWebDriver(new URL(REMOTE_SELENIUM_SERVER_URL), capability)
 	        } catch (Exception e) {
@@ -95,7 +87,7 @@ class EnvironmentDifferentAbsorber {
 		}
 	}
 
-	protected static boolean isHttpConnect(String httpAddress) {
+	protected static boolean isHttpConnectable(String httpAddress) {
 		try {
 			boolean isConnectAndResponse = false
 			URL url = new URL(httpAddress)
