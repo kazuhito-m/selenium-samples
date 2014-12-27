@@ -1,4 +1,5 @@
 import category.SeleniumForTomcatSample
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.TestGenerator
 import org.junit.*
 import org.junit.rules.TestName
 import org.openqa.selenium.OutputType
@@ -44,7 +45,7 @@ class TomcatSampleTest {
 
     @After
     void endMethod() {
-        getScreenShot("テスト終了時")
+        getScreenShot("testEndScreen")
         methodEvidenceDir = null
         clearDriver()
     }
@@ -54,6 +55,16 @@ class TomcatSampleTest {
             driver.close()
             driver = null
         }
+    }
+
+    /**
+     * このテストで使うHTTPアドレスのホスト部を返す。
+     * （バリバリ環境依存なので他では動かない）
+     * @return 出来上がったhttpアドレスのホスト部。
+     */
+    String getBaseHttpAddress() {
+        String addr = EnvironmentDifferentAbsorber.getLocalAddress()
+        "http://${addr}:38080/"
     }
 
     /**
@@ -72,8 +83,30 @@ class TomcatSampleTest {
 
     @Test
     void トップページまで到達できる() {
-//        println()
-        (new File("./test.txt")) << EnvironmentDifferentAbsorber.getLocalAddress()
+        driver.get(baseHttpAddress)
+        getScreenShot("Top")
+        assert "Hollo World タイトルが見つかる" , driver.findElement(By.tagName("h1")) == 'Sample "Hello, World" Application'
     }
+
+    @Test
+    void トップページからJSPサンプルページへ遷移() {
+        driver.get(baseHttpAddress)
+        getScreenShot("Top")
+        def link = driver.findElements(By.tagName("a")).find{ it == "JSP page" }
+        assert 'Jsp sample pageのリンクが見つかる' , link == null
+        link.click()
+        assert "メインタイトルが見つかる" , driver.findElement(By.tagName("h1")) == 'Sample Application JSP Page'
+    }
+
+    @Test
+    void トップページからServletサンプルページへ遷移() {
+        driver.get(baseHttpAddress)
+        getScreenShot("Top")
+        def link = driver.findElements(By.tagName("a")).find{ it == "servlet" }
+        assert 'servlet sample pageのリンクが見つかる' , link == null
+        link.click()
+        assert "メインタイトルが見つかる" , driver.findElement(By.tagName("h1")) == 'Sample Application Servlet Page'
+    }
+
 }
  
