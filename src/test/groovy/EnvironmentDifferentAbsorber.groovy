@@ -74,9 +74,9 @@ class EnvironmentDifferentAbsorber {
 	}
 
 	/**
-	 * 「開発チーム用のネットワークか否か」を判定する。
+	 * 「開発用のネットワークか否か」を判定する。
 	 *
-	 * @return true:開発チームのネットワーク。
+	 * @return true:開発のネットワーク。
 	 */
 	public static boolean isDeveloperNetwork() {
 		try {
@@ -87,6 +87,11 @@ class EnvironmentDifferentAbsorber {
 		}
 	}
 
+    /**
+     * 指定されたHTTPアドrスに「接続できるか」を検査し、真偽値で返す。
+     * @param httpAddress 検査するHTTPアドレス。
+     * @return 結果。True:接続可能。
+     */
 	protected static boolean isHttpConnectable(String httpAddress) {
 		try {
 			boolean isConnectAndResponse = false
@@ -110,5 +115,13 @@ class EnvironmentDifferentAbsorber {
 			return false
 		}
 	}
+
+    /**
+     * localhost,127.0.0.1 以外の「自身サーバのアドレス」を取得する。
+     * @return localhost,127.0.0.1 以外の「自身サーバのアドレス」文字列。
+     */
+    static String getLocalAddress() {
+        NetworkInterface.networkInterfaces.find{ !it.equals("localhost") && !it.equals("127.0.0.1")}
+    }
 
 }
