@@ -30,7 +30,7 @@ class GebSampleTest {
             go 'http://www.htmlhifive.com/conts/web/view/Main/WebHome'
 
             // 1ページ目、”⇛こちら”ってリンクを探しクリック。
-            assert title == "hifive - HTML5とスマートフォンのための開発プラットフォーム - hifive"
+            assert title == "hifive - HTML5企業Webシステムのための開発プラットフォーム - hifive"
             def link = $('a').allElements().find() { it.text == "⇒こちら" }
             link.click()
 
