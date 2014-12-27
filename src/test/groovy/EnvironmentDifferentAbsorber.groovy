@@ -120,8 +120,19 @@ class EnvironmentDifferentAbsorber {
      * localhost,127.0.0.1 以外の「自身サーバのアドレス」を取得する。
      * @return localhost,127.0.0.1 以外の「自身サーバのアドレス」文字列。
      */
-    static String getLocalAddress() {
-        NetworkInterface.networkInterfaces.find{ !it.equals("localhost") && !it.equals("127.0.0.1")}
+    public static String getLocalAddress() {
+        String hit = null
+        Collections.list(NetworkInterface.networkInterfaces).each { NetworkInterface ni ->
+            Collections.list(ni.inetAddresses).each { addr ->
+                if (addr instanceof Inet4Address) {
+                    String host = addr.getHostAddress()
+                    if (!host.equals("127.0.0.1")) {
+                        hit = host
+                    }
+                }
+            }
+        }
+        hit
     }
 
 }

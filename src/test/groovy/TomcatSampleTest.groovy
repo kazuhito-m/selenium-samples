@@ -72,7 +72,8 @@ class TomcatSampleTest {
 
     @Test
     void トップページまで到達できる() {
-        println(NetworkInterface.getNetworkInterfaces())
+//        println()
+        (new File("./test.txt")) << EnvironmentDifferentAbsorber.getLocalAddress()
     }
 }
  

@@ -17,6 +17,20 @@ dependencies {
   testCompile "junit:junit:4.11"
 }
 
+/* tomcat sample 用のテストだけ実行。 */
+task tomcatSampleTest(type: Test, dependsOn: testClasses) {
+    useJUnit {
+        includeCategories 'category.SeleniumForTomcatSample'
+    }
+}
+
+/* 普通のテスト。 */
+test {
+    useJUnit {
+        excludeCategories 'category.SeleniumForTomcatSample'
+    }
+}
+
 sourceSets {
     allSource
 }
