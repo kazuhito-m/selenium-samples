@@ -1,14 +1,12 @@
 import category.SeleniumForTomcatSample
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.TestGenerator
 import org.junit.*
+import org.junit.experimental.categories.Category
 import org.junit.rules.TestName
 import org.openqa.selenium.OutputType
 import org.openqa.selenium.TakesScreenshot
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.io.FileHandler
-import org.junit.experimental.categories.Category
-
+import org.openqa.selenium.By
 
 /**
  * Groovy + JUnitで書いたブラウザテストのサンプル。
@@ -64,7 +62,7 @@ class TomcatSampleTest {
      */
     String getBaseHttpAddress() {
         String addr = EnvironmentDifferentAbsorber.getLocalAddress()
-        "http://${addr}:38080/"
+        "http://${addr}:38080/sample"
     }
 
     /**
@@ -85,27 +83,27 @@ class TomcatSampleTest {
     void トップページまで到達できる() {
         driver.get(baseHttpAddress)
         getScreenShot("Top")
-        assert "Hollo World タイトルが見つかる" , driver.findElement(By.tagName("h1")) == 'Sample "Hello, World" Application'
+        assert driver.findElement(By.tagName("h1")).text == 'Sample "Hello, World" Application'
     }
 
     @Test
     void トップページからJSPサンプルページへ遷移() {
         driver.get(baseHttpAddress)
         getScreenShot("Top")
-        def link = driver.findElements(By.tagName("a")).find{ it == "JSP page" }
-        assert 'Jsp sample pageのリンクが見つかる' , link == null
+        def link = driver.findElements(By.tagName("a")).find{ it.text == "JSP page" }
+        assert link != null
         link.click()
-        assert "メインタイトルが見つかる" , driver.findElement(By.tagName("h1")) == 'Sample Application JSP Page'
+        assert driver.findElement(By.tagName("h1")).text == 'Sample Application JSP Page'
     }
 
     @Test
     void トップページからServletサンプルページへ遷移() {
         driver.get(baseHttpAddress)
         getScreenShot("Top")
-        def link = driver.findElements(By.tagName("a")).find{ it == "servlet" }
-        assert 'servlet sample pageのリンクが見つかる' , link == null
+        def link = driver.findElements(By.tagName("a")).find{ it.text == "servlet" }
+        assert link != null
         link.click()
-        assert "メインタイトルが見つかる" , driver.findElement(By.tagName("h1")) == 'Sample Application Servlet Page'
+        assert driver.findElement(By.tagName("h1")).text == 'Sample Application Servlet'
     }
 
 }
